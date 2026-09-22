@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>雙機對決排行榜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Barlow+Condensed:wght@600;800&display=swap">
+<style>
+:root{
+  --y:#fabe05; --k:#111111; --ink:#f5f2ea; --mute:#9a968c; --line:#2c2a26; --card:#1c1b18; --card2:#252320;
+  --silver:#d9d6ce; --bronze:#d8955a;
+  --gutter:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--k);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.num{font-family:"Barlow Condensed","Noto Sans TC",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:720px;margin:0 auto;padding-inline:var(--gutter)}
+
+/* header */
+header{padding-top:calc(env(safe-area-inset-top,0px) + 18px);padding-bottom:14px;background:
+  linear-gradient(180deg,#1d1a10 0%,var(--k) 100%)}
+.ev{color:var(--y);font-weight:900;font-size:12px;letter-spacing:.14em}
+.titleRow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}
+h1{font-size:clamp(26px,7vw,40px);font-weight:900;line-height:1.1;letter-spacing:.02em}
+h1 em{font-style:normal;color:var(--y);font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:1.05em;padding:0 .08em}
+.live{display:flex;align-items:center;gap:6px;flex:none;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:#3ddc84;animation:pulse 2s infinite}
+.dot.off{background:#e5484d;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,132,.6)}70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+@media (prefers-reduced-motion:reduce){.dot,.row.new{animation:none}}
+.date{color:var(--mute);font-size:12px;font-weight:700;margin-top:6px}
+
+/* sticky controls */
+.controls{position:sticky;top:0;z-index:5;background:rgba(17,17,17,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding-top:calc(env(safe-area-inset-top,0px) + 8px);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border-radius:12px;padding:4px;gap:4px}
+.tabs button{border:0;background:transparent;color:var(--mute);font:inherit;font-weight:900;font-size:15px;
+  padding:10px 4px;border-radius:9px;cursor:pointer;min-height:44px}
+.tabs button[aria-pressed="true"]{background:var(--y);color:var(--k)}
+.tabs button:focus-visible,.find input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.find{position:relative;margin-top:8px}
+.find input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px 11px 40px;min-height:44px}
+.find input::placeholder{color:#6f6b62}
+.find svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--mute)}
+.findMsg{font-size:13px;color:var(--mute);font-weight:700;margin-top:6px;min-height:0}
+.findMsg:empty{display:none}
+
+/* podium */
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end;margin:18px 0 14px}
+.pod{border-radius:16px;padding:12px 8px 14px;text-align:center;min-width:0;background:var(--card);border:1px solid var(--line);position:relative}
+.pod .medal{width:34px;height:34px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;
+  font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:var(--k)}
+.pod .who{font-weight:900;font-size:15px;line-height:1.25;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pod .dept{font-size:11px;color:var(--mute);font-weight:700;min-height:1.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .sc{font-weight:800;font-size:32px;line-height:1;margin-top:8px}
+.pod .sc small{font-family:"Noto Sans TC",sans-serif;font-size:11px;font-weight:900;margin-left:2px}
+.pod .mm{font-size:12px;font-weight:700;margin-top:6px;color:var(--mute)}
+.pod.p1{background:var(--y);color:var(--k);border-color:var(--y);padding-top:18px;padding-bottom:20px}
+.pod.p1 .medal{background:var(--k);color:var(--y);width:42px;height:42px;font-size:28px}
+.pod.p1 .who{font-size:17px}
+.pod.p1 .sc{font-size:42px}
+.pod.p1 .dept,.pod.p1 .mm{color:#5a4600}
+.pod.p2 .medal{background:var(--silver)} .pod.p3 .medal{background:var(--bronze)}
+.pod.p1 .crown{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:34px;height:20px}
+
+/* list */
+.list{list-style:none;display:grid;gap:6px;padding-bottom:12px}
+.row{display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;background:var(--card);
+  border-radius:12px;padding:10px 14px;border:1px solid var(--line);scroll-margin-top:140px}
+.row .r{font-weight:800;font-size:20px;color:var(--mute);text-align:center}
+.row .n{min-width:0}
+.row .n b{display:block;font-size:16px;font-weight:900;overflow-wrap:anywhere;line-height:1.3}
+.row .n .d{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px;font-size:12px;color:var(--mute);font-weight:700}
+.row .s{font-weight:800;font-size:28px;color:var(--y);text-align:right;line-height:1}
+.row .s small{display:block;font-family:"Noto Sans TC",sans-serif;font-size:10px;color:var(--mute);font-weight:700;margin-top:2px}
+.row.me,.pod.me{outline:3px solid var(--ink);outline-offset:2px}
+.row.new{animation:flash 2.4s ease-out}
+@keyframes flash{0%{background:#4a3a00}100%{background:var(--card)}}
+.chip{display:inline-block;font-weight:900;font-size:11px;padding:1px 8px;border-radius:999px;background:var(--y);color:var(--k);white-space:nowrap}
+.chip.bike{background:#fff}
+.pod.p1 .chip{background:var(--k);color:var(--y)} .pod.p1 .chip.bike{background:#fff;color:var(--k)}
+.empty{text-align:center;color:var(--mute);padding:48px 0;font-weight:700}
+.more{text-align:center;color:var(--mute);font-size:13px;font-weight:700;padding:4px 0 8px}
+
+/* info */
+.info{margin:12px 0 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.info h2{font-size:14px;font-weight:900;margin-bottom:8px}
+.fx{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fx div{background:var(--card2);border-radius:10px;padding:10px;text-align:center}
+.fx span{display:block;font-size:12px;color:var(--mute);font-weight:700}
+.fx b{font-size:22px}
+.lv{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:13px;font-weight:700;color:var(--mute);flex-wrap:wrap}
+.lv b{color:var(--ink)}
+.demo{display:inline-block;background:#e5484d;color:#fff;font-weight:900;font-size:11px;padding:2px 8px;border-radius:4px;margin-left:6px;vertical-align:middle}
+footer{color:var(--mute);font-size:12px;text-align:center;padding:18px 0 calc(env(safe-area-inset-bottom,0px) + 24px);line-height:1.6}
+
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:10px var(--gutter) calc(env(safe-area-inset-bottom,0px) + 10px);
+  background:linear-gradient(180deg,rgba(17,17,17,0) 0%,rgba(17,17,17,.96) 40%)}
+.cta a{display:flex;align-items:center;justify-content:center;gap:8px;max-width:720px;margin:0 auto;background:var(--y);color:var(--k);
+  font-weight:900;font-size:17px;text-decoration:none;border-radius:14px;min-height:52px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.cta a:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
+/* larger screens (現場大螢幕) */
+@media (min-width:900px){
+  .wrap{max-width:1100px}
+  h1{font-size:56px}
+  .podium{gap:20px;margin-top:28px}
+  .pod{padding:22px 16px 24px}
+  .pod .who{font-size:24px} .pod.p1 .who{font-size:30px}
+  .pod .sc{font-size:56px} .pod.p1 .sc{font-size:76px}
+  .pod .dept,.pod .mm{font-size:15px}
+  .row{padding:14px 22px}
+  .row .n b{font-size:22px} .row .s{font-size:38px} .row .r{font-size:28px}
+  .row .n .d{font-size:14px} .chip{font-size:13px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="ev" id="eventName">輔仁大學 × 健身工廠 校園挑戰賽</div>
+    <div class="titleRow">
+      <h1>划船 <em>vs</em> 飛輪</h1>
+      <div class="live"><span class="dot" id="dot"></span><span id="status">連線中</span></div>
+    </div>
+    <div class="date" id="eventDate"></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="tabs" role="group" aria-label="篩選機器">
+      <button type="button" id="tab-all" data-f="all" aria-pressed="true">總排行</button>
+      <button type="button" id="tab-rower" data-f="rower" aria-pressed="false">划船機</button>
+      <button type="button" id="tab-bike" data-f="bike" aria-pressed="false">飛輪</button>
+    </div>
+    <label class="find" for="find">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="find" type="search" placeholder="輸入暱稱，找找你的名次" autocomplete="off" enterkeyhint="search">
+    </label>
+    <div class="findMsg" id="findMsg" role="status"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="podium" id="podium" aria-label="前三名"></section>
+  <ol class="list" id="list"></ol>
+  <div class="more" id="more"></div>
+
+  <section class="info" aria-label="計分方式">
+    <h2>戰力分數怎麼算？<span id="demoTag"></span></h2>
+    <div class="fx">
+      <div><span>划船機</span><b class="num">公尺 × 5</b></div>
+      <div><span>飛輪</span><b class="num">公尺 × 2</b></div>
+    </div>
+    <div class="lv"><span><b>650 分+</b> B 獎區任選</span><span><b>800 分+</b> A 獎區任選</span></div>
+  </section>
+</main>
+<footer class="wrap">每人只列個人最佳成績・主辦單位會核對電子錶照片<br>頁面每 5 秒自動更新</footer>
+<div class="cta"><a href="submit.html">＋ 登錄我的成績</a></div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+  const C = window.LEADERBOARD_CONFIG || {};
+  const MUL = C.MULTIPLIER || {rower:5,bike:2};
+  const LABEL = {rower:"划船機", bike:"飛輪"};
+  const SHOW = 100;
+  const $ = id => document.getElementById(id);
+  $("eventName").textContent = C.EVENT_NAME || "";
+  $("eventDate").textContent = C.EVENT_DATE || "";
+
+  let filter = "all", query = "";
+  try{ filter = localStorage.getItem("lb-filter") || "all"; query = localStorage.getItem("lb-find") || ""; }catch(e){}
+  $("find").value = query;
+  let rows = [], seen = new Set(), firstLoad = true;
+
+  // 範例資料：尚未設定 API_URL 時使用（僅供預覽版面）
+  const SAMPLE = [
+    {id:"s1",nickname:"划船小霸王",dept:"體育系 3A",machine:"rower",meters:168},
+    {id:"s2",nickname:"飛輪阿傑",dept:"資工系 2B",machine:"bike",meters:405},
+    {id:"s3",nickname:"Mia",dept:"",machine:"rower",meters:151},
+    {id:"s4",nickname:"輔大腿王",dept:"企管系 4A",machine:"bike",meters:362},
+    {id:"s5",nickname:"小胖",dept:"法律系 1C",machine:"rower",meters:139},
+    {id:"s6",nickname:"Kevin",dept:"",machine:"bike",meters:318},
+    {id:"s7",nickname:"今天不練腿",dept:"大傳系 2A",machine:"rower",meters:124},
+    {id:"s8",nickname:"阿美",dept:"營養系 3B",machine:"bike",meters:276}
+  ];
+
+  const score = r => Math.round((Number(r.meters)||0) * (MUL[r.machine]||0));
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const chip = m => `<span class="chip ${m==="bike"?"bike":""}">${LABEL[m]||""}</span>`;
+  const isMe = r => query && String(r.nickname).toLowerCase().includes(query.toLowerCase());
+  const crown = '<svg class="crown" viewBox="0 0 34 20" aria-hidden="true"><path d="M2 18 L4 4 L11 11 L17 2 L23 11 L30 4 L32 18 Z" fill="#fabe05" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>';
+
+  function ranked(){
+    return rows.filter(r => filter==="all" || r.machine===filter)
+      .map(r => ({...r, score: score(r)}))
+      .sort((a,b) => b.score - a.score || (a.t||0) - (b.t||0));
+  }
+
+  function render(){
+    const list = ranked();
+    const pod = $("podium"), ol = $("list");
+    if(!list.length){
+      pod.innerHTML = ""; ol.innerHTML = '<li class="empty">還沒有成績，第一名等你來拿！</li>'; $("more").textContent = ""; renderFind(list); return;
+    }
+    const top = [list[1], list[0], list[2]];
+    pod.innerHTML = top.map((r,k) => {
+      if(!r) return "<div></div>";
+      const i = k===1 ? 1 : k===0 ? 2 : 3;
+      return `<article class="pod p${i} ${isMe(r)?"me":""}" id="r-${esc(r.id)}">
+        ${i===1?crown:""}<div class="medal">${i}</div>
+        <div class="who">${esc(r.nickname)}</div><div class="dept">${esc(r.dept)}</div>
+        <div class="sc num">${r.score}<small>分</small></div>
+        <div class="mm">${chip(r.machine)} <span class="num">${esc(r.meters)}M</span></div>
+      </article>`;
+    }).join("");
+    ol.innerHTML = list.slice(3, SHOW).map((r,i) => `
+      <li class="row ${(!firstLoad && !seen.has(r.id))?"new":""} ${isMe(r)?"me":""}" id="r-${esc(r.id)}">
+        <span class="r num">${i+4}</span>
+        <span class="n"><b>${esc(r.nickname)}</b><span class="d">${chip(r.machine)}<span class="num">${esc(r.meters)}M</span>${r.dept?`<span>· ${esc(r.dept)}</span>`:""}</span></span>
+        <span class="s num">${r.score}<small>分</small></span>
+      </li>`).join("");
+    $("more").textContent = list.length > SHOW ? `共 ${list.length} 人，顯示前 ${SHOW} 名` : `共 ${list.length} 人`;
+    rows.forEach(r => seen.add(r.id));
+    firstLoad = false;
+    renderFind(list);
+  }
+
+  function renderFind(list){
+    const msg = $("findMsg");
+    if(!query){ msg.textContent = ""; return; }
+    const hits = list.map((r,i) => ({r, rank:i+1})).filter(x => isMe(x.r));
+    if(!hits.length){ msg.textContent = `找不到「${query}」，確認暱稱或切換機器看看`; return; }
+    const h = hits[0];
+    msg.textContent = hits.length===1 ? `「${h.r.nickname}」目前第 ${h.rank} 名・${h.r.score} 分` : `找到 ${hits.length} 位，最高第 ${h.rank} 名（${h.r.nickname}）`;
+  }
+
+  function setStatus(ok, text){ $("dot").className = "dot" + (ok ? "" : " off"); $("status").textContent = text; }
+
+  async function load(){
+    if(!C.API_URL){
+      rows = SAMPLE; render();
+      $("demoTag").innerHTML = '<span class="demo">範例資料</span>';
+      setStatus(true, "預覽"); return;
+    }
+    try{
+      const res = await fetch(C.API_URL + "?action=public&_=" + Date.now());
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || "讀取失敗");
+      rows = data.rows || []; render();
+      setStatus(true, new Date().toLocaleTimeString("zh-TW",{hour12:false,hour:"2-digit",minute:"2-digit",second:"2-digit"}));
+    }catch(e){ setStatus(false, "重新連線中"); }
+  }
+
+  document.querySelectorAll(".tabs button").forEach(b => {
+    b.setAttribute("aria-pressed", String(b.dataset.f===filter));
+    b.addEventListener("click", () => {
+      filter = b.dataset.f;
+      try{ localStorage.setItem("lb-filter", filter); }catch(e){}
+      document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+      render();
+    });
+  });
+
+  let t;
+  $("find").addEventListener("input", e => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      query = e.target.value.trim();
+      try{ localStorage.setItem("lb-find", query); }catch(e){}
+      render();
+      const el = document.querySelector(".me");
+      if(el) el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+    }, 250);
+  });
+
+  load();
+  if(C.API_URL){
+    setInterval(() => { if(!document.hidden) load(); }, Math.max(3, C.REFRESH_SECONDS||5) * 1000);
+    document.addEventListener("visibilitychange", () => { if(!document.hidden) load(); });
+  }
+})();
+</script>
+</body>
+</html>
