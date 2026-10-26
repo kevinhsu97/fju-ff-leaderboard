@@ -110,9 +110,9 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
       const d = await api({action:"recent"});
       $("recent").innerHTML = (d.rows||[]).map(r => `
         <li class="${r.hidden?"hid":""}">
-          <div><b>${esc(r.nickname)}</b> <span>${r.machine==="bike"?"飛輪":"划船機"} ${esc(r.meters)}M · ${esc(r.name)} · ${esc(r.time)}</span>
+          <div><b>${esc(r.nickname)}</b> <span>${r.sex==="f"?"女":"男"} · ${esc(r.meters)}M · ${esc(r.level||"")} · ${esc(r.name)} · ${esc(r.time)}</span>
             ${r.photo?`<br><a href="${esc(r.photo)}" target="_blank" rel="noopener">照片 ↗</a>`:""}</div>
-          <span class="sc num">${r.score}</span>
+          <span class="sc num">${r.meters}<small style="font-size:15px">M</small></span>
           <button class="btn" type="button" data-id="${esc(r.id)}" data-h="${r.hidden?0:1}">${r.hidden?"恢復":"隱藏"}</button>
         </li>`).join("") || '<li><span>尚無資料</span></li>';
     }catch(e){ $("recent").innerHTML = `<li><span>${esc(e.message)}</span></li>`; }

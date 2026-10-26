@@ -69,22 +69,22 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
 <main class="wrap">
 
   <form id="form" novalidate>
-    <p class="intro">挑戰完成後，拍下<b>電子錶成績</b>，填好資料就能登上排行榜！人多的話可以先拍照，晚點再來填。</p>
+    <p class="intro">划完 20 秒後，拍下<b>電子錶的公尺數</b>，填好資料就能登上排行榜！雙人 PK 的話兩個人都各自上傳自己的成績。人多的話可以先拍照，晚點再來填。</p>
     <section class="card">
       <h2>排行榜顯示 <span class="tag">公開</span></h2>
       <label for="nickname">暱稱</label>
       <input type="text" id="nickname" maxlength="12" required placeholder="排行榜上顯示的名字">
       <label for="dept">系級班級 <small>（選填，非輔大生可空白）</small></label>
       <input type="text" id="dept" maxlength="16" placeholder="例：資工系 2B">
-      <label>機器</label>
+      <label>性別 <small>（領獎門檻男女不同）</small></label>
       <div class="seg">
-        <input type="radio" name="machine" id="m-rower" value="rower" checked><label for="m-rower">划船機</label>
-        <input type="radio" name="machine" id="m-bike" value="bike"><label for="m-bike">飛輪</label>
+        <input type="radio" name="sex" id="s-m" value="m" checked><label for="s-m">男生</label>
+        <input type="radio" name="sex" id="s-f" value="f"><label for="s-f">女生</label>
       </div>
-      <label for="meters">30 秒成績（公尺）<small>（照電子錶上的數字）</small></label>
+      <label for="meters">划船機 20 秒成績（公尺）<small>（照電子錶上的數字）</small></label>
       <input type="text" id="meters" inputmode="decimal" pattern="[0-9]*[.]?[0-9]*" maxlength="6" autocomplete="off" required placeholder="例：142">
       <div class="preview">
-        <div><div class="t">戰力分數</div><div class="s num" id="pScore">0</div></div>
+        <div><div class="t">你的成績</div><div class="s num" id="pScore">0<small style="font-size:22px">M</small></div></div>
         <div class="lv"><div class="t">獎勵</div><div id="pLevel">—</div></div>
       </div>
     </section>
@@ -122,18 +122,19 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
 <script>
 (function(){
   const C = window.LEADERBOARD_CONFIG || {};
-  const MUL = C.MULTIPLIER || {rower:5,bike:2};
-  const MAX = {rower:250, bike:700}; // 30 秒內合理上限，超過視為輸入錯誤
+  const TH = C.THRESHOLD || {m:{b:110,a:150}, f:{b:90,a:120}};
+  const MAX = 300; // 20 秒內合理上限，超過視為輸入錯誤
   const $ = id => document.getElementById(id);
   let photoData = null;
-  const machine = () => document.querySelector('input[name=machine]:checked').value;
-  const scoreOf = () => Math.round((parseFloat($("meters").value)||0) * MUL[machine()]);
-  const levelOf = s => s>=800 ? "A 獎區任選" : s>=650 ? "B 獎區任選" : s>0 ? "參加獎" : "—";
+  const sex = () => document.querySelector('input[name=sex]:checked').value;
+  const scoreOf = () => Math.round(parseFloat($("meters").value)||0);
+  const levelOf = (m, x) => { const t = TH[x==="f"?"f":"m"];
+    return m>=t.a ? "A 獎區任選" : m>=t.b ? "B 獎區任選" : m>0 ? "參加獎" : "—"; };
   try{ const saved = JSON.parse(localStorage.getItem("me")||"{}"); ["nickname","dept","realname","phone"].forEach(k => { if(saved[k]) $(k).value = saved[k]; }); }catch(e){}
 
-  function updatePreview(){ const s = scoreOf(); $("pScore").textContent = s; $("pLevel").textContent = levelOf(s); }
+  function updatePreview(){ const s = scoreOf(); $("pScore").innerHTML = s + '<small style="font-size:22px">M</small>'; $("pLevel").textContent = levelOf(s, sex()); }
   $("meters").addEventListener("input", e => { const v = e.target.value.replace(/[^0-9.]/g,"").replace(/(\..*)\./g,"$1"); if(v !== e.target.value) e.target.value = v; updatePreview(); });
-  document.querySelectorAll('input[name=machine]').forEach(r => r.addEventListener("change", updatePreview));
+  document.querySelectorAll('input[name=sex]').forEach(r => r.addEventListener("change", updatePreview));
 
   async function onPick(e){
     const f = e.target.files[0]; if(!f) return; photoData = null; $("photoPrev").hidden = true; $("photoClear").hidden = true;
@@ -155,12 +156,12 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
   $("form").addEventListener("submit", async e => {
     e.preventDefault();
     const msg = $("msg"); msg.className = "msg err";
-    const m = machine();
+    const x = sex();
     const nickname = $("nickname").value.trim(), meters = parseFloat($("meters").value.replace(/[^0-9.]/g,""));
     const realname = $("realname").value.trim(), phone = $("phone").value.replace(/\D/g,"");
     if(!nickname) return msg.textContent = "請填暱稱";
     if(!(meters > 0)) return msg.textContent = "請填公尺數";
-    if(meters > MAX[m]) return msg.textContent = `公尺數好像太高了，請再確認電子錶（${m==="bike"?"飛輪":"划船機"}上限 ${MAX[m]}M）`;
+    if(meters > MAX) return msg.textContent = `公尺數好像太高了，請再確認電子錶（上限 ${MAX}M）`;
     if(!realname) return msg.textContent = "請填本名";
     if(!/^09\d{8}$/.test(phone)) return msg.textContent = "手機格式應為 09 開頭共 10 碼";
     if(!photoData) return msg.textContent = "請上傳電子錶照片";
@@ -169,11 +170,11 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
     $("submitBtn").disabled = true; msg.className = "msg"; msg.textContent = "上傳中，請稍候…";
     try{
       const res = await fetch(C.API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
-        body: JSON.stringify({action:"submit", nickname, dept:$("dept").value.trim(), machine:m, meters, realname, phone, photo:photoData})});
+        body: JSON.stringify({action:"submit", nickname, dept:$("dept").value.trim(), sex:x, meters, realname, phone, photo:photoData})});
       const data = await res.json();
       if(!data.ok) throw new Error(data.error || "送出失敗");
       try{ localStorage.setItem("me", JSON.stringify({nickname, dept:$("dept").value.trim(), realname, phone})); localStorage.setItem("lb-find", nickname); }catch(e){}
-      msg.className = "msg ok"; msg.textContent = `送出成功！${nickname} ${data.score} 分（${levelOf(data.score)}）`;
+      msg.className = "msg ok"; msg.textContent = `送出成功！${nickname} ${data.score}M（${levelOf(data.score, x)}）`;
       $("meters").value = ""; photoData = null; $("photoPrev").hidden = true; $("photoClear").hidden = true; $("consent").checked = false; updatePreview();
       $("toBoard").hidden = false;
     }catch(err){ msg.className = "msg err"; msg.textContent = err.message; }

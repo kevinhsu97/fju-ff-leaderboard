@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>輔仁大學 × 健身工廠 校園挑戰賽</title>
+<meta name="description" content="11/17（二）13:00–17:00 輔大風華廣場。三大關卡，闖關就有獎。">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Barlow+Condensed:wght@600;800&display=swap">
+<style>
+:root{--y:#fabe05;--k:#111111;--ink:#f5f2ea;--mute:#9a968c;--line:#2c2a26;--card:#1c1b18;--card2:#252320;--g:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--k);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;padding-bottom:40px}
+.num{font-family:"Barlow Condensed","Noto Sans TC",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:0 var(--g)}
+a{color:inherit}
+
+/* hero */
+header{background:var(--y);color:var(--k);padding:26px 0 24px;position:relative;overflow:hidden}
+header .ev{font-size:14px;font-weight:900;letter-spacing:2px}
+header h1{font-size:clamp(40px,12vw,58px);font-weight:900;line-height:1.05;margin-top:8px;letter-spacing:1px}
+header .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+header .meta span{background:var(--k);color:#fff;font-size:14px;font-weight:900;padding:7px 12px;border-radius:6px}
+header .meta span b{color:var(--y);margin-right:7px}
+.badge{position:absolute;right:-18px;top:-18px;width:132px;height:132px;border-radius:50%;background:var(--k);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding-left:14px;padding-top:14px}
+.badge .n{font-size:40px;font-weight:900;color:var(--y);line-height:1}
+.badge .t{font-size:15px;font-weight:900;color:#fff;letter-spacing:1px}
+
+/* cta */
+.cta{display:grid;gap:10px;margin-top:18px;position:relative;z-index:2}
+.cta a{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 18px;
+  text-decoration:none;font-weight:900;font-size:18px}
+.cta a.p{background:var(--y);color:var(--k);border-color:var(--y)}
+.cta a .s{font-size:13px;font-weight:700;color:var(--mute);display:block;margin-top:3px}
+.cta a.p .s{color:#6b5302}
+.cta a .ar{font-size:22px;flex:none}
+
+h2{font-size:20px;font-weight:900;margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:6px;height:20px;background:var(--y);flex:none;border-radius:2px}
+
+.st{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 16px 18px;margin-bottom:12px}
+.st .top{display:flex;align-items:baseline;gap:10px}
+.st .no{font-size:26px;font-weight:900;color:var(--y);line-height:1}
+.st .nm{font-size:21px;font-weight:900}
+.st .tag{font-size:12px;font-weight:700;color:var(--mute);margin-top:6px}
+.st p{font-size:15px;font-weight:500;line-height:1.75;margin-top:10px;color:#ddd8cd}
+.st p b{color:#fff;font-weight:900}
+.hl{background:var(--y);color:var(--k);font-weight:900;padding:1px 7px;border-radius:4px}
+
+table{width:100%;margin-top:12px;border-collapse:collapse;table-layout:fixed}
+th,td{text-align:center;padding:8px 4px;font-size:15px;font-weight:900;border:1px solid var(--line)}
+th{background:var(--card2);font-size:13px;color:var(--mute)}
+td:first-child{text-align:left;padding-left:10px;font-size:14px}
+tr.b td{background:rgba(250,190,5,.14)}
+tr.a td{background:var(--y);color:var(--k)}
+.note{font-size:13px;font-weight:700;color:var(--mute);margin-top:10px;line-height:1.6}
+
+.bands{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.bd{border:2px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center}
+.bd .v{font-size:14px;font-weight:900}
+.bd .g{font-size:17px;font-weight:900;letter-spacing:1px;margin:3px 0;color:var(--y)}
+.bd .p{font-size:13px;font-weight:700;color:var(--mute)}
+.bd.x{background:var(--y);border-color:var(--y)}
+.bd.x .v,.bd.x .g{color:var(--k)} .bd.x .p{color:#6b5302}
+
+.pz{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 16px 16px;margin-bottom:10px}
+.pz .h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  border-bottom:2px solid var(--line);padding-bottom:9px}
+.pz .h .zh{font-size:17px;font-weight:900;color:var(--y)}
+.pz .h .en{font-size:11px;font-weight:900;color:var(--mute);letter-spacing:2px}
+.pz ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:11px}
+.pz.one ul{grid-template-columns:1fr}
+.pz li{font-size:14px;font-weight:700;display:flex;gap:7px;line-height:1.4;color:#ddd8cd}
+.pz li::before{content:"";width:6px;height:6px;background:var(--y);flex:none;margin-top:6px;border-radius:1px}
+
+.tips{background:var(--card2);border-radius:14px;padding:14px 16px;font-size:13px;font-weight:700;
+  line-height:1.8;color:#cfcabf}
+.tips b{color:var(--y)}
+footer{text-align:center;color:var(--mute);font-size:12px;font-weight:700;line-height:1.8;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="ev">輔仁大學 × 健身工廠</div>
+    <h1>校園挑戰賽</h1>
+    <div class="meta">
+      <span><b>日期</b>11/17（二）</span>
+      <span><b>時間</b>13:00–17:00</span>
+      <span><b>地點</b>輔大風華廣場</span>
+    </div>
+    <div class="badge"><div class="n">3</div><div class="t">大關卡</div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="cta">
+    <a class="p" href="index.html"><span>即時排行榜<span class="s">看看誰是全校最強</span></span><span class="ar">›</span></a>
+    <a href="submit.html"><span>登錄我的成績<span class="s">划完 20 秒就來上傳</span></span><span class="ar">›</span></a>
+  </nav>
+
+  <h2>三大關卡</h2>
+
+  <section class="st">
+    <div class="top"><span class="no num">01</span><span class="nm">尋找全校健友牆</span></div>
+    <div class="tag">#低門檻 #強社交</div>
+    <p>在便利貼寫下<b>常去的館名 ＋ IG 帳號</b>，貼上健友牆就完成！（也可以寫想找的健友類型／想說的話）</p>
+    <p><span class="hl">完成即得 健身工廠七日體驗會籍</span></p>
+  </section>
+
+  <section class="st">
+    <div class="top"><span class="no num">02</span><span class="nm">划船機 20 秒衝刺</span></div>
+    <div class="tag">#熱血對決 #單人也能玩</div>
+    <p>上機全力衝 <b>20 秒</b>，成績就看電子錶的<b>公尺數</b>。可以單人挑戰拚自己的紀錄，也可以兩人 PK，公尺高者勝、<b>贏的再加拿一個 B 區小物</b>。兩人的成績都可以各自登錄排行榜。</p>
+    <table>
+      <tr><th>獎勵</th><th>男生</th><th>女生</th></tr>
+      <tr><td>參加獎</td><td>未滿 110M</td><td>未滿 90M</td></tr>
+      <tr class="b"><td>B 獎區任選</td><td>110M 以上</td><td>90M 以上</td></tr>
+      <tr class="a"><td>A 獎區任選</td><td>150M 以上</td><td>120M 以上</td></tr>
+    </table>
+    <p class="note">★ 成績登上即時排行榜，沒達標也照樣領參加獎。</p>
+  </section>
+
+  <section class="st">
+    <div class="top"><span class="no num">03</span><span class="nm">瘋狂搖乳清</span></div>
+    <div class="tag">#娛樂趣味 #爆發力</div>
+    <p>手腕戴上<b>電子計步器</b>，拿起搖搖杯<b>瘋狂搖 20 秒</b>，依計步次數發獎！</p>
+    <div class="bands">
+      <div class="bd"><div class="v">未滿 70 下</div><div class="g">GOOD</div><div class="p">B 獎區任選</div></div>
+      <div class="bd x"><div class="v">70–89 下</div><div class="g">GREAT</div><div class="p">A 獎區任選</div></div>
+      <div class="bd"><div class="v">90 下以上</div><div class="g">BEAST</div><div class="p">PW 搖搖杯</div></div>
+    </div>
+  </section>
+
+  <h2>獎品一覽</h2>
+
+  <div class="pz one">
+    <div class="h"><span class="zh">參加獎</span><span class="en">ALL</span></div>
+    <ul><li>健身工廠七日體驗會籍</li></ul>
+  </div>
+  <div class="pz">
+    <div class="h"><span class="zh">B 獎區</span><span class="en">GOOD</span></div>
+    <ul>
+      <li>PW 一水肌酸</li><li>手機掛繩</li>
+      <li>立體手臂吊飾</li><li>造型磁鐵</li>
+      <li>甜甜圈零錢包</li><li>乳清分裝罐</li>
+      <li>槓片鑰匙圈</li><li>InBody 免費測量</li>
+      <li>魔鬼氈徽章</li>
+    </ul>
+  </div>
+  <div class="pz">
+    <div class="h"><span class="zh">A 獎區</span><span class="en">GREAT</span></div>
+    <ul><li>PW 乳清蛋白</li><li>PW 蛋白飲</li><li>PW 蛋白脆粒棒</li></ul>
+  </div>
+  <div class="pz one">
+    <div class="h"><span class="zh">特別獎</span><span class="en">BEAST</span></div>
+    <ul><li>PW 搖搖杯</li></ul>
+  </div>
+
+  <h2>參加前先看</h2>
+  <div class="tips">
+    ・<b>獎品數量有限，送完為止</b>，建議早點來。<br>
+    ・登錄成績要上傳<b>電子錶照片</b>佐證，人多的話可以先拍起來，晚點再填。<br>
+    ・排行榜只顯示每個人的<b>最佳成績</b>，本名與手機不會公開。<br>
+    ・現場備有便利貼與簽字筆，空手來就可以。
+  </div>
+
+  <footer>輔仁大學 × 健身工廠 校園挑戰賽<br>11/17（二）13:00–17:00｜輔大風華廣場</footer>
+</main>
+
+</body>
+</html>

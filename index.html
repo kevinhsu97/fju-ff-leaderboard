@@ -126,7 +126,7 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
   <div class="wrap">
     <div class="ev" id="eventName">輔仁大學 × 健身工廠 校園挑戰賽</div>
     <div class="titleRow">
-      <h1>划船 <em>vs</em> 飛輪</h1>
+      <h1>划船機 <em>20</em> 秒</h1>
       <div class="live"><span class="dot" id="dot"></span><span id="status">連線中</span></div>
     </div>
     <div class="date" id="eventDate"></div>
@@ -135,11 +135,6 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
 
 <div class="controls">
   <div class="wrap">
-    <div class="tabs" role="group" aria-label="篩選機器">
-      <button type="button" id="tab-all" data-f="all" aria-pressed="true">總排行</button>
-      <button type="button" id="tab-rower" data-f="rower" aria-pressed="false">划船機</button>
-      <button type="button" id="tab-bike" data-f="bike" aria-pressed="false">飛輪</button>
-    </div>
     <label class="find" for="find">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="find" type="search" placeholder="輸入暱稱，找找你的名次" autocomplete="off" enterkeyhint="search">
@@ -153,13 +148,14 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
   <ol class="list" id="list"></ol>
   <div class="more" id="more"></div>
 
-  <section class="info" aria-label="計分方式">
-    <h2>戰力分數怎麼算？<span id="demoTag"></span></h2>
+  <section class="info" aria-label="領獎門檻">
+    <h2>怎麼比？<span id="demoTag"></span></h2>
     <div class="fx">
-      <div><span>划船機</span><b class="num">公尺 × 5</b></div>
-      <div><span>飛輪</span><b class="num">公尺 × 2</b></div>
+      <div><span>划船機</span><b class="num">全力衝 20 秒</b></div>
+      <div><span>比的是</span><b class="num">電子錶公尺數</b></div>
     </div>
-    <div class="lv"><span><b>650 分+</b> B 獎區任選</span><span><b>800 分+</b> A 獎區任選</span></div>
+    <div class="lv"><span><b>男生</b> 110M／150M</span><span><b>女生</b> 90M／120M</span></div>
+    <p style="margin-top:10px;font-size:13px;color:var(--mute);line-height:1.6">達到前面的數字可任選 B 獎區，後面的數字可任選 A 獎區，沒達標也有參加獎。</p>
   </section>
 </main>
 <footer class="wrap">每人只列個人最佳成績・主辦單位會核對電子錶照片<br>頁面每 5 秒自動更新</footer>
@@ -169,39 +165,40 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
 <script>
 (function(){
   const C = window.LEADERBOARD_CONFIG || {};
-  const MUL = C.MULTIPLIER || {rower:5,bike:2};
-  const LABEL = {rower:"划船機", bike:"飛輪"};
+  const TH = C.THRESHOLD || {m:{b:110,a:150}, f:{b:90,a:120}};
+  const LABEL = {m:"男", f:"女"};
   const SHOW = 100;
   const $ = id => document.getElementById(id);
   $("eventName").textContent = C.EVENT_NAME || "";
   $("eventDate").textContent = C.EVENT_DATE || "";
 
-  let filter = "all", query = "";
-  try{ filter = localStorage.getItem("lb-filter") || "all"; query = localStorage.getItem("lb-find") || ""; }catch(e){}
+  let query = "";
+  try{ query = localStorage.getItem("lb-find") || ""; }catch(e){}
   $("find").value = query;
   let rows = [], seen = new Set(), firstLoad = true;
 
   // 範例資料：尚未設定 API_URL 時使用（僅供預覽版面）
   const SAMPLE = [
-    {id:"s1",nickname:"划船小霸王",dept:"體育系 3A",machine:"rower",meters:168},
-    {id:"s2",nickname:"飛輪阿傑",dept:"資工系 2B",machine:"bike",meters:405},
-    {id:"s3",nickname:"Mia",dept:"",machine:"rower",meters:151},
-    {id:"s4",nickname:"輔大腿王",dept:"企管系 4A",machine:"bike",meters:362},
-    {id:"s5",nickname:"小胖",dept:"法律系 1C",machine:"rower",meters:139},
-    {id:"s6",nickname:"Kevin",dept:"",machine:"bike",meters:318},
-    {id:"s7",nickname:"今天不練腿",dept:"大傳系 2A",machine:"rower",meters:124},
-    {id:"s8",nickname:"阿美",dept:"營養系 3B",machine:"bike",meters:276}
+    {id:"s1",nickname:"划船小霸王",dept:"體育系 3A",sex:"m",meters:168},
+    {id:"s2",nickname:"阿傑",dept:"資工系 2B",sex:"m",meters:161},
+    {id:"s3",nickname:"Mia",dept:"",sex:"f",meters:138},
+    {id:"s4",nickname:"輔大腿王",dept:"企管系 4A",sex:"m",meters:134},
+    {id:"s5",nickname:"小胖",dept:"法律系 1C",sex:"m",meters:121},
+    {id:"s6",nickname:"阿美",dept:"營養系 3B",sex:"f",meters:112},
+    {id:"s7",nickname:"今天不練腿",dept:"大傳系 2A",sex:"m",meters:104},
+    {id:"s8",nickname:"欣欣",dept:"織品系 1A",sex:"f",meters:88}
   ];
 
-  const score = r => Math.round((Number(r.meters)||0) * (MUL[r.machine]||0));
+  const score = r => Math.round(Number(r.meters)||0);
+  const lvOf = r => { const t = TH[r.sex==="f"?"f":"m"], m = score(r);
+    return m>=t.a ? "A" : m>=t.b ? "B" : ""; };
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const chip = m => `<span class="chip ${m==="bike"?"bike":""}">${LABEL[m]||""}</span>`;
+  const chip = r => { const lv = lvOf(r); return lv ? `<span class="chip ${lv==="A"?"":"bike"}">${lv} 獎區</span>` : ""; };
   const isMe = r => query && String(r.nickname).toLowerCase().includes(query.toLowerCase());
   const crown = '<svg class="crown" viewBox="0 0 34 20" aria-hidden="true"><path d="M2 18 L4 4 L11 11 L17 2 L23 11 L30 4 L32 18 Z" fill="#fabe05" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>';
 
   function ranked(){
-    return rows.filter(r => filter==="all" || r.machine===filter)
-      .map(r => ({...r, score: score(r)}))
+    return rows.map(r => ({...r, score: score(r)}))
       .sort((a,b) => b.score - a.score || (a.t||0) - (b.t||0));
   }
 
@@ -218,15 +215,15 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
       return `<article class="pod p${i} ${isMe(r)?"me":""}" id="r-${esc(r.id)}">
         ${i===1?crown:""}<div class="medal">${i}</div>
         <div class="who">${esc(r.nickname)}</div><div class="dept">${esc(r.dept)}</div>
-        <div class="sc num">${r.score}<small>分</small></div>
-        <div class="mm">${chip(r.machine)} <span class="num">${esc(r.meters)}M</span></div>
+        <div class="sc num">${r.score}<small>M</small></div>
+        <div class="mm">${chip(r)}</div>
       </article>`;
     }).join("");
     ol.innerHTML = list.slice(3, SHOW).map((r,i) => `
       <li class="row ${(!firstLoad && !seen.has(r.id))?"new":""} ${isMe(r)?"me":""}" id="r-${esc(r.id)}">
         <span class="r num">${i+4}</span>
-        <span class="n"><b>${esc(r.nickname)}</b><span class="d">${chip(r.machine)}<span class="num">${esc(r.meters)}M</span>${r.dept?`<span>· ${esc(r.dept)}</span>`:""}</span></span>
-        <span class="s num">${r.score}<small>分</small></span>
+        <span class="n"><b>${esc(r.nickname)}</b><span class="d">${chip(r)}${r.dept?`<span>${esc(r.dept)}</span>`:""}</span></span>
+        <span class="s num">${r.score}<small>M</small></span>
       </li>`).join("");
     $("more").textContent = list.length > SHOW ? `共 ${list.length} 人，顯示前 ${SHOW} 名` : `共 ${list.length} 人`;
     rows.forEach(r => seen.add(r.id));
@@ -238,9 +235,9 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
     const msg = $("findMsg");
     if(!query){ msg.textContent = ""; return; }
     const hits = list.map((r,i) => ({r, rank:i+1})).filter(x => isMe(x.r));
-    if(!hits.length){ msg.textContent = `找不到「${query}」，確認暱稱或切換機器看看`; return; }
+    if(!hits.length){ msg.textContent = `找不到「${query}」，確認一下暱稱有沒有打錯`; return; }
     const h = hits[0];
-    msg.textContent = hits.length===1 ? `「${h.r.nickname}」目前第 ${h.rank} 名・${h.r.score} 分` : `找到 ${hits.length} 位，最高第 ${h.rank} 名（${h.r.nickname}）`;
+    msg.textContent = hits.length===1 ? `「${h.r.nickname}」目前第 ${h.rank} 名・${h.r.score}M` : `找到 ${hits.length} 位，最高第 ${h.rank} 名（${h.r.nickname}）`;
   }
 
   function setStatus(ok, text){ $("dot").className = "dot" + (ok ? "" : " off"); $("status").textContent = text; }
@@ -259,16 +256,6 @@ footer{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px) !important}
       setStatus(true, new Date().toLocaleTimeString("zh-TW",{hour12:false,hour:"2-digit",minute:"2-digit",second:"2-digit"}));
     }catch(e){ setStatus(false, "重新連線中"); }
   }
-
-  document.querySelectorAll(".tabs button").forEach(b => {
-    b.setAttribute("aria-pressed", String(b.dataset.f===filter));
-    b.addEventListener("click", () => {
-      filter = b.dataset.f;
-      try{ localStorage.setItem("lb-filter", filter); }catch(e){}
-      document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
-      render();
-    });
-  });
 
   let t;
   $("find").addEventListener("input", e => {
