@@ -68,6 +68,11 @@ textarea{min-height:100px;line-height:1.7}
 #done p{font-size:15.5px;font-weight:700;color:var(--mute);margin-top:12px;line-height:1.8}
 #done a{display:block;margin-top:26px;background:var(--card);border:2px solid var(--k);border-radius:14px;
   padding:16px;font-size:17px;font-weight:900;text-decoration:none;color:var(--ink)}
+.contact{margin-top:28px;border-top:2px dashed var(--line);padding-top:20px;text-align:center}
+.contact .ct{font-size:14px;font-weight:900;color:var(--mute);letter-spacing:1px}
+.contact .links{display:flex;gap:8px;margin-top:12px}
+.contact .links a{flex:1;border:2px solid var(--k);border-radius:11px;padding:12px 4px;
+  font-size:15px;font-weight:900;text-decoration:none;color:var(--ink);background:#fff}
 </style>
 </head>
 <body>
@@ -174,12 +179,7 @@ textarea{min-height:100px;line-height:1.7}
       <label class="opt"><input type="radio" name="e12" value="已經有在上了"><span>已經有在上了</span></label>
     </div></div>
 
-  <div class="q" data-k="e13"><div class="no">Q13</div><h2>想多了解的話，留個聯絡方式</h2>
-    <div class="hint">姓名＋手機。只有填了我們才會聯絡，用來回答場館在哪、體驗會籍怎麼用、有哪些課這類問題，不會一直打給你。</div>
-    <input type="text" name="e13" placeholder="例：王小明 0912345678" inputmode="text">
-  </div>
-
-  <div class="q" data-k="e14"><div class="no">Q14</div><h2>有什麼想對我們說的？</h2>
+  <div class="q" data-k="e14"><div class="no">Q13</div><h2>有什麼想對我們說的？</h2>
     <div class="hint">哪裡好玩、哪裡卡卡的、下次想玩什麼，都歡迎直說！</div>
     <textarea name="e14" placeholder="直說沒關係 🙂"></textarea>
   </div>
@@ -187,6 +187,14 @@ textarea{min-height:100px;line-height:1.7}
   <button type="submit" class="send" id="btn">送出回饋</button>
   <div class="foot">標示 <span style="color:#d93025">*</span> 的為必填 · 回饋僅用於活動檢討與改善</div>
 </form>
+  <div class="contact">
+    <div class="ct">想了解健身工廠，直接找他們</div>
+    <div class="links">
+      <a href="https://www.fitnessfactory.com.tw/" target="_blank" rel="noopener">官方網站</a>
+      <a href="https://www.instagram.com/fitness_factory_taiwan/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/FitnessFactory.Group/" target="_blank" rel="noopener">Facebook</a>
+    </div>
+  </div>
 </div>
 
 <div class="wrap" id="done">
@@ -195,6 +203,14 @@ textarea{min-height:100px;line-height:1.7}
   <p>祝你 14 日體驗玩得開心 💪<br>我們下次活動見。</p>
   <a href="event.html">回活動頁</a>
   <a href="index.html" style="background:var(--y);border-color:var(--k)">看即時排行榜</a>
+  <div class="contact">
+    <div class="ct">想了解健身工廠，直接找他們</div>
+    <div class="links">
+      <a href="https://www.fitnessfactory.com.tw/" target="_blank" rel="noopener">官方網站</a>
+      <a href="https://www.instagram.com/fitness_factory_taiwan/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/FitnessFactory.Group/" target="_blank" rel="noopener">Facebook</a>
+    </div>
+  </div>
 </div>
 
 <iframe name="sink" id="sink" style="display:none"></iframe>
@@ -202,7 +218,7 @@ textarea{min-height:100px;line-height:1.7}
 var ACTION="https://docs.google.com/forms/d/e/1FAIpQLSeZ0keeHVx9fSWbodjWFin9cMhudog0iiU3ZU3XEu5ECax2SQ/formResponse";
 var MAP={e1:"367104046",e2:"1726152979",e3:"1256509526",e4:"841130419",e5:"1526107506",
   e6:"1277408165",e7:"2126705455",e8:"1476823858",e9:"2042313448",e10:"493030081",
-  e11:"845345062",e12:"1517348315",e13:"590469301",e14:"1431096023"};
+  e11:"845345062",e12:"1517348315",e14:"1431096023"};
 var REQ=["e1","e3","e4","e5","e9","e10","e11"];
 
 function scale(id,name){
