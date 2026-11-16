@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>活動回饋｜輔仁大學 × 健身工廠 校園挑戰賽</title>
+<meta name="description" content="花 1 分鐘給我們一點回饋，讓下一場活動更好玩。">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Barlow+Condensed:wght@600;800&display=swap">
+<style>
+:root{--y:#fabe05;--k:#111111;--bg:#f7f6f2;--ink:#111111;--mute:#746f66;--line:#e2ddd2;--card:#ffffff;--bad:#d93025;--g:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;padding-bottom:40px}
+.num{font-family:"Barlow Condensed","Noto Sans TC",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:0 var(--g)}
+
+header{background:var(--y);color:var(--k);padding:24px 0 22px;position:relative;overflow:hidden}
+header .ev{font-size:13px;font-weight:900;letter-spacing:2px}
+header h1{font-size:clamp(34px,10vw,46px);font-weight:900;line-height:1.08;margin-top:7px;letter-spacing:1px}
+header p{font-size:14.5px;font-weight:700;margin-top:12px;line-height:1.7;color:#4a3c05}
+.badge{position:absolute;right:-20px;top:-20px;width:118px;height:118px;border-radius:50%;background:var(--k);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding-left:16px;padding-top:16px}
+.badge .n{font-size:30px;font-weight:900;color:var(--y);line-height:1}
+.badge .t{font-size:12px;font-weight:900;color:#fff;letter-spacing:1px;margin-top:3px}
+
+.q{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 16px 17px;margin-top:12px}
+.q.err{border-color:var(--bad)}
+.q .no{font-size:12px;font-weight:900;color:var(--mute);letter-spacing:1px}
+.q h2{font-size:17px;font-weight:900;line-height:1.5;margin-top:5px}
+.q h2 i{font-style:normal;color:var(--bad);margin-left:4px}
+.q .hint{font-size:13px;font-weight:700;color:var(--mute);margin-top:7px;line-height:1.6}
+.q .warn{display:none;font-size:13px;font-weight:900;color:var(--bad);margin-top:9px}
+.q.err .warn{display:block}
+
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;width:0;height:0}
+.opt span{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:11px;
+  padding:12px 13px;font-size:16px;font-weight:700;background:#fff;line-height:1.4}
+.opt span::before{content:"";width:19px;height:19px;border-radius:50%;border:2px solid #c9c3b6;flex:none}
+.opt.cb span::before{border-radius:5px}
+.opt input:checked+span{border-color:var(--k);background:var(--y);font-weight:900}
+.opt input:checked+span::before{border-color:var(--k);background:var(--k);box-shadow:inset 0 0 0 3px var(--y)}
+.opt.cb input:checked+span::before{box-shadow:none;background:var(--k)}
+
+.scale{display:flex;gap:7px;margin-top:13px}
+.scale label{flex:1}
+.scale input{position:absolute;opacity:0;width:0;height:0}
+.scale span{display:block;text-align:center;border:2px solid var(--line);border-radius:11px;padding:13px 0;
+  font-size:21px;font-weight:900;background:#fff}
+.scale input:checked+span{border-color:var(--k);background:var(--k);color:var(--y)}
+.ends{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--mute);margin-top:7px}
+
+input[type=text],textarea{width:100%;margin-top:12px;border:2px solid var(--line);border-radius:11px;
+  padding:13px;font-size:16px;font-weight:700;font-family:inherit;background:#fff;color:var(--ink);resize:vertical}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--k)}
+textarea{min-height:100px;line-height:1.7}
+
+.send{width:100%;margin-top:20px;background:var(--k);color:#fff;border:none;border-radius:14px;
+  padding:18px;font-size:19px;font-weight:900;font-family:inherit;cursor:pointer;letter-spacing:1px}
+.send:disabled{opacity:.55}
+.foot{font-size:12.5px;font-weight:700;color:var(--mute);text-align:center;margin-top:14px;line-height:1.7}
+
+#done{display:none;text-align:center;padding:70px 0 40px}
+#done .tick{width:92px;height:92px;border-radius:50%;background:var(--y);margin:0 auto;
+  display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900}
+#done h2{font-size:28px;font-weight:900;margin-top:22px}
+#done p{font-size:15.5px;font-weight:700;color:var(--mute);margin-top:12px;line-height:1.8}
+#done a{display:block;margin-top:26px;background:var(--card);border:2px solid var(--k);border-radius:14px;
+  padding:16px;font-size:17px;font-weight:900;text-decoration:none;color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="ev">輔仁大學 × 健身工廠</div>
+    <h1>活動回饋</h1>
+    <p>謝謝你今天來玩！花 1 分鐘給我們一點回饋，<br>讓下一場活動更好玩。</p>
+  </div>
+  <div class="badge"><div class="n">1</div><div class="t">分鐘</div></div>
+</header>
+
+<div class="wrap" id="main">
+<form id="f" autocomplete="off">
+
+  <div class="q" data-k="e1"><div class="no">Q1</div><h2>你的身分<i>*</i></h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e1" value="輔大學生"><span>輔大學生</span></label>
+      <label class="opt"><input type="radio" name="e1" value="輔大教職員"><span>輔大教職員</span></label>
+      <label class="opt"><input type="radio" name="e1" value="校外人士"><span>校外人士</span></label>
+    </div><div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e2"><div class="no">Q2</div><h2>生理性別</h2>
+    <div class="hint">只用於活動成效統計</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e2" value="男"><span>男</span></label>
+      <label class="opt"><input type="radio" name="e2" value="女"><span>女</span></label>
+      <label class="opt"><input type="radio" name="e2" value="不方便透露"><span>不方便透露</span></label>
+    </div></div>
+
+  <div class="q" data-k="e3"><div class="no">Q3</div><h2>你參加了哪幾關？<i>*</i></h2>
+    <div class="hint">可複選</div>
+    <div class="opts">
+      <label class="opt cb"><input type="checkbox" name="e3" value="01 健友牆"><span>01 健友牆</span></label>
+      <label class="opt cb"><input type="checkbox" name="e3" value="02 划船機 20 秒衝刺"><span>02 划船機 20 秒衝刺</span></label>
+      <label class="opt cb"><input type="checkbox" name="e3" value="03 瘋狂搖乳清"><span>03 瘋狂搖乳清</span></label>
+    </div><div class="warn">至少選一個</div></div>
+
+  <div class="q" data-k="e4"><div class="no">Q4</div><h2>整體來說，今天的活動你給幾分？<i>*</i></h2>
+    <div class="scale" id="s4"></div>
+    <div class="ends"><span>不太滿意</span><span>超讚</span></div>
+    <div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e5"><div class="no">Q5</div><h2>最喜歡哪一關？<i>*</i></h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e5" value="01 健友牆"><span>01 健友牆</span></label>
+      <label class="opt"><input type="radio" name="e5" value="02 划船機 20 秒衝刺"><span>02 划船機 20 秒衝刺</span></label>
+      <label class="opt"><input type="radio" name="e5" value="03 瘋狂搖乳清"><span>03 瘋狂搖乳清</span></label>
+      <label class="opt"><input type="radio" name="e5" value="都差不多"><span>都差不多</span></label>
+    </div><div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e6"><div class="no">Q6</div><h2>關卡的難度如何？</h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e6" value="太簡單"><span>太簡單</span></label>
+      <label class="opt"><input type="radio" name="e6" value="剛剛好"><span>剛剛好</span></label>
+      <label class="opt"><input type="radio" name="e6" value="太難"><span>太難</span></label>
+    </div></div>
+
+  <div class="q" data-k="e7"><div class="no">Q7</div><h2>現場流程順不順？</h2>
+    <div class="hint">排隊、規則說明、兌獎</div>
+    <div class="scale" id="s7"></div>
+    <div class="ends"><span>很混亂</span><span>很順</span></div></div>
+
+  <div class="q" data-k="e8"><div class="no">Q8</div><h2>你是怎麼知道這個活動的？</h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e8" value="剛好路過被邀請"><span>剛好路過被邀請</span></label>
+      <label class="opt"><input type="radio" name="e8" value="朋友揪的"><span>朋友揪的</span></label>
+      <label class="opt"><input type="radio" name="e8" value="Instagram"><span>Instagram</span></label>
+      <label class="opt"><input type="radio" name="e8" value="LINE 群組"><span>LINE 群組</span></label>
+      <label class="opt"><input type="radio" name="e8" value="系上／社團公告"><span>系上／社團公告</span></label>
+      <label class="opt"><input type="radio" name="e8" value="其他"><span>其他</span></label>
+    </div></div>
+  <div class="q" data-k="e9"><div class="no">Q9</div><h2>你平常的運動習慣是？<i>*</i></h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e9" value="幾乎不運動"><span>幾乎不運動</span></label>
+      <label class="opt"><input type="radio" name="e9" value="偶爾動一下"><span>偶爾動一下</span></label>
+      <label class="opt"><input type="radio" name="e9" value="每週 1–2 次"><span>每週 1–2 次</span></label>
+      <label class="opt"><input type="radio" name="e9" value="每週 3 次以上"><span>每週 3 次以上</span></label>
+      <label class="opt"><input type="radio" name="e9" value="我已經是健身房會員了"><span>我已經是健身房會員了</span></label>
+    </div><div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e10"><div class="no">Q10</div><h2>你已經是健身工廠的會員了嗎？<i>*</i></h2>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e10" value="是"><span>是</span></label>
+      <label class="opt"><input type="radio" name="e10" value="不是"><span>不是</span></label>
+      <label class="opt"><input type="radio" name="e10" value="不確定"><span>不確定</span></label>
+    </div><div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e11"><div class="no">Q11</div><h2>今天拿到的 14 日體驗會籍，你會想去用嗎？<i>*</i></h2>
+    <div class="hint">沒有要推銷，單純想知道大家的想法</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e11" value="一定會去"><span>一定會去</span></label>
+      <label class="opt"><input type="radio" name="e11" value="應該會，再找時間"><span>應該會，再找時間</span></label>
+      <label class="opt"><input type="radio" name="e11" value="看看再說"><span>看看再說</span></label>
+      <label class="opt"><input type="radio" name="e11" value="應該不會"><span>應該不會</span></label>
+    </div><div class="warn">這題要選喔</div></div>
+
+  <div class="q" data-k="e12"><div class="no">Q12</div><h2>你最近有想開始上健身房嗎？</h2>
+    <div class="hint">單純想知道大家的狀態</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="e12" value="有，已經在找適合的地方"><span>有，已經在找適合的地方</span></label>
+      <label class="opt"><input type="radio" name="e12" value="有想過，還沒開始"><span>有想過，還沒開始</span></label>
+      <label class="opt"><input type="radio" name="e12" value="目前沒有這個打算"><span>目前沒有這個打算</span></label>
+      <label class="opt"><input type="radio" name="e12" value="已經有在上了"><span>已經有在上了</span></label>
+    </div></div>
+
+  <div class="q" data-k="e13"><div class="no">Q13</div><h2>想多了解的話，留個聯絡方式</h2>
+    <div class="hint">姓名＋手機。只有填了我們才會聯絡，用來回答場館在哪、體驗會籍怎麼用、有哪些課這類問題，不會一直打給你。</div>
+    <input type="text" name="e13" placeholder="例：王小明 0912345678" inputmode="text">
+  </div>
+
+  <div class="q" data-k="e14"><div class="no">Q14</div><h2>有什麼想對我們說的？</h2>
+    <div class="hint">哪裡好玩、哪裡卡卡的、下次想玩什麼，都歡迎直說！</div>
+    <textarea name="e14" placeholder="直說沒關係 🙂"></textarea>
+  </div>
+
+  <button type="submit" class="send" id="btn">送出回饋</button>
+  <div class="foot">標示 <span style="color:#d93025">*</span> 的為必填 · 回饋僅用於活動檢討與改善</div>
+</form>
+</div>
+
+<div class="wrap" id="done">
+  <div class="tick">✓</div>
+  <h2>收到了，謝謝你！</h2>
+  <p>祝你 14 日體驗玩得開心 💪<br>我們下次活動見。</p>
+  <a href="event.html">回活動頁</a>
+  <a href="index.html" style="background:var(--y);border-color:var(--k)">看即時排行榜</a>
+</div>
+
+<iframe name="sink" id="sink" style="display:none"></iframe>
+<script>
+var ACTION="https://docs.google.com/forms/d/e/1FAIpQLSeZ0keeHVx9fSWbodjWFin9cMhudog0iiU3ZU3XEu5ECax2SQ/formResponse";
+var MAP={e1:"367104046",e2:"1726152979",e3:"1256509526",e4:"841130419",e5:"1526107506",
+  e6:"1277408165",e7:"2126705455",e8:"1476823858",e9:"2042313448",e10:"493030081",
+  e11:"845345062",e12:"1517348315",e13:"590469301",e14:"1431096023"};
+var REQ=["e1","e3","e4","e5","e9","e10","e11"];
+
+function scale(id,name){
+  var h="";
+  for(var i=1;i<=5;i++) h+='<label><input type="radio" name="'+name+'" value="'+i+'"><span class="num">'+i+'</span></label>';
+  document.getElementById(id).innerHTML=h;
+}
+scale("s4","e4"); scale("s7","e7");
+
+var f=document.getElementById("f"), btn=document.getElementById("btn");
+f.addEventListener("change",function(e){
+  var q=e.target.closest(".q"); if(q) q.classList.remove("err");
+});
+
+function vals(name){
+  var o=[],n=f.querySelectorAll('[name="'+name+'"]');
+  for(var i=0;i<n.length;i++){
+    if(n[i].type==="radio"||n[i].type==="checkbox"){ if(n[i].checked) o.push(n[i].value); }
+    else if(n[i].value.trim()) o.push(n[i].value.trim());
+  }
+  return o;
+}
+
+f.addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var bad=null;
+  for(var i=0;i<REQ.length;i++){
+    var q=f.querySelector('[data-k="'+REQ[i]+'"]');
+    if(vals(REQ[i]).length===0){ q.classList.add("err"); if(!bad) bad=q; }
+    else q.classList.remove("err");
+  }
+  if(bad){ bad.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+
+  btn.disabled=true; btn.textContent="送出中…";
+
+  var g=document.createElement("form");
+  g.method="POST"; g.action=ACTION; g.target="sink"; g.style.display="none";
+  for(var k in MAP){
+    var vs=vals(k);
+    for(var j=0;j<vs.length;j++){
+      var inp=document.createElement("input");
+      inp.type="hidden"; inp.name="entry."+MAP[k]; inp.value=vs[j];
+      g.appendChild(inp);
+    }
+  }
+  document.body.appendChild(g);
+  var fired=false;
+  function finish(){ if(fired) return; fired=true;
+    document.getElementById("main").style.display="none";
+    document.getElementById("done").style.display="block";
+    window.scrollTo(0,0);
+  }
+  document.getElementById("sink").onload=finish;
+  g.submit();
+  setTimeout(finish,2500);
+});
+</script>
+</body>
+</html>
