@@ -62,11 +62,25 @@ input[type=file]::file-selector-button{font:inherit;font-weight:900;font-size:15
 .intro{font-size:15px;line-height:1.6;margin-bottom:14px}
 .btn.ghost{width:100%;margin-top:10px;padding:14px;text-decoration:none}
 [hidden]{display:none!important}
+.closed{background:var(--card);border:2px solid var(--k);border-radius:16px;padding:28px 20px 24px;margin-top:18px;text-align:center}
+.closed .t{font-size:30px;font-weight:900;letter-spacing:2px}
+.closed p{font-size:15px;font-weight:700;color:var(--mute);line-height:1.85;margin-top:12px}
+.closed a{display:block;margin-top:12px;padding:15px;border:2px solid var(--k);border-radius:12px;
+  font-size:17px;font-weight:900;text-decoration:none;color:var(--k);background:var(--y)}
+.closed a.alt{background:var(--card)}
+#form{display:none}
 </style>
 </head>
 <body>
 <header><div class="wrap"><h1>登錄 <span>我的成績</span></h1><a href="index.html">看排行榜 →</a></div></header>
 <main class="wrap">
+
+  <div class="closed">
+    <div class="t">活動已結束</div>
+    <p>成績登錄已經關閉，感謝今天來挑戰的每一位！<br>最終排名已經出爐，歡迎回去看看。</p>
+    <a href="index.html">看最終排行榜</a>
+    <a class="alt" href="feedback.html">填活動回饋（1 分鐘）</a>
+  </div>
 
   <form id="form" novalidate>
     <p class="intro">划完 20 秒後，拍下<b>電子錶的公尺數</b>，填好資料就能登上排行榜！雙人 PK 的話兩個人都各自上傳自己的成績。人多的話可以先拍照，晚點再來填。</p>
